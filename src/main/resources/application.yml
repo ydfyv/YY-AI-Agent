@@ -6,6 +6,9 @@ spring:
   ai:
     dashscope:
       api-key: ???
+      chat:
+        options:
+          model: qwq-plus
 server:
   servlet:
     context-path: /api
