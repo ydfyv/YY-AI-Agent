@@ -1,11 +1,15 @@
 package com.yy.yy_ai_agent.demo.invoke;
 
 import com.yy.yy_ai_agent.Adviser.MyLogAdviser;
+import com.yy.yy_ai_agent.Adviser.ReReadingAdviser;
+import com.yy.yy_ai_agent.chatMemory.FileBaseChatMemory;
 import com.yy.yy_ai_agent.tools.DateTimeTools;
+import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -17,13 +21,33 @@ public class SpringAIInvoke implements CommandLineRunner {
 
     private final ChatClient chatClient;
 
+    @Resource
+    private ChatModel dashscopeChatModel;
+
     public SpringAIInvoke(ChatClient.Builder builder) {
         ChatMemory chatMemory = MessageWindowChatMemory.builder().build();
         // 创建内存记忆的chatClient
+
+        // 基于本地文件记忆的chatClient
+//        String fileDir = System.getProperty("user.dir") + "/chat-memory";
+//        ChatMemory chatMemory = new FileBaseChatMemory(fileDir);
+//        this.chatClient = builder
+//                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build(),
+//                        new MyLogAdviser(),
+//                        new ReReadingAdviser()
+//                )
+//                .defaultTools(new DateTimeTools())
+//                .defaultSystem("你是一个程序员")
+//                .build();
+
         this.chatClient = builder
-                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build(), new MyLogAdviser())
+                .defaultSystem("你是一个小助手")
+                .defaultAdvisors(
+                        new MyLogAdviser(),
+                        new ReReadingAdviser(),
+                        MessageChatMemoryAdvisor.builder(chatMemory).build()
+                )
                 .defaultTools(new DateTimeTools())
-                .defaultSystem("你是一个程序员")
                 .build();
     }
 
