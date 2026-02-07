@@ -88,10 +88,10 @@ public class FileBaseChatMemory implements ChatMemory {
 
     private void saveConversation(String conversationId, List<Message> messages) {
         File file = getConversationFile(conversationId);
-        try {
-            kryo.writeObject(new Output(new FileOutputStream(file)), messages);
+        try (Output output = new Output(new FileOutputStream(file))) {
+            kryo.writeObject(output, messages);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("无法保存会话: " + conversationId, e);
         }
     }
 }

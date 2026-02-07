@@ -25,12 +25,13 @@ public class SpringAIInvoke implements CommandLineRunner {
     private ChatModel dashscopeChatModel;
 
     public SpringAIInvoke(ChatClient.Builder builder) {
-        ChatMemory chatMemory = MessageWindowChatMemory.builder().build();
+//        ChatMemory chatMemory = MessageWindowChatMemory.builder().build();
         // 创建内存记忆的chatClient
 
         // 基于本地文件记忆的chatClient
-//        String fileDir = System.getProperty("user.dir") + "/chat-memory";
-//        ChatMemory chatMemory = new FileBaseChatMemory(fileDir);
+        String fileDir = System.getProperty("user.dir") + "/chat-memory";
+        ChatMemory chatMemory = new FileBaseChatMemory(fileDir);
+
 //        this.chatClient = builder
 //                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build(),
 //                        new MyLogAdviser(),
@@ -76,6 +77,12 @@ public class SpringAIInvoke implements CommandLineRunner {
         String content4 = chatClient.prompt(input4).call().content();
         System.out.println("client:" + content4);
         System.out.println("------------------------------------");
+
+//        String input4 = "我叫什么名字";
+//        System.out.println("user:" + input4);
+//        String content4 = chatClient.prompt(input4).call().content();
+//        System.out.println("client:" + content4);
+//        System.out.println("------------------------------------");
     }
 
 //    @Override
