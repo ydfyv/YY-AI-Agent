@@ -9,6 +9,14 @@ spring:
       chat:
         options:
           model: qwq-plus
+    vectorstore:
+      redis:
+        initialize-schema: true
+        index-name: assistant
+        prefix: yy_ai_agent:vector_store
+  data:
+    redis:
+      url: redis://localhost:6379
 server:
   servlet:
     context-path: /api
@@ -31,3 +39,6 @@ knife4j:
   enable: true
   setting:
     language: zh_cn
+
+search-api:
+  api-key: ???
