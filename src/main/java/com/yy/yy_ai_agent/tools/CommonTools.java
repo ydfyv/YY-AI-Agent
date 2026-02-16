@@ -8,7 +8,7 @@ import org.springframework.ai.tool.annotation.Tool;
  */
 public class CommonTools {
 
-    @Tool(description = "获取项目根路径")
+    @Tool(description = "获取项目根目录")
     public String getProjectPath(){
         return System.getProperty("user.dir");
     }

@@ -37,7 +37,7 @@ public class FileTools {
         try {
             FileWriter writer = new FileWriter(filePath);
             writer.write(content);
-            return "文件写入成功";
+            return "文件写入成功, 文件路径：" + filePath;
         } catch (Exception e) {
             return "文件写入失败：" + e.getMessage();
         }

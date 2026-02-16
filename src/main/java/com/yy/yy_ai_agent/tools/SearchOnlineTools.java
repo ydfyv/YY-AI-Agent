@@ -34,16 +34,18 @@ public class SearchOnlineTools {
 
             JSONObject jsonObject = JSONUtil.parseObj(response);
 
-            JSONArray organicResults = jsonObject.getJSONArray("organic_results");
+//            JSONArray organicResults = jsonObject.getJSONArray("organic_results");
+//
+//            return organicResults.stream().map(obj -> {
+//                JSONObject item = (JSONObject) obj;
+//                JSONObject result = new JSONObject();
+//                result.set("title", item.getStr("title"));
+//                result.set("link", item.getStr("link"));
+//                result.set("snippet", item.getStr("snippet"));
+//                return result.toString();
+//            }).collect(Collectors.joining(","));
 
-            return organicResults.stream().map(obj -> {
-                JSONObject item = (JSONObject) obj;
-                JSONObject result = new JSONObject();
-                result.set("title", item.getStr("title"));
-                result.set("link", item.getStr("link"));
-                result.set("snippet", item.getStr("snippet"));
-                return result.toString();
-            }).collect(Collectors.joining(","));
+            return jsonObject.toString();
         } catch (Exception e) {
             return "搜索失败：" + e.getMessage();
         }

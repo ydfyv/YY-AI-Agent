@@ -24,7 +24,8 @@ public class ToolRegistration {
         SearchOnlineTools searchOnlineTools = new SearchOnlineTools(apiKey);
         CommonTools commonTools = new CommonTools();
         TerminalOperationTool terminalOperationTool = new TerminalOperationTool();
+        TerminateTools terminateTools = new TerminateTools();
 
-        return ToolCallbacks.from(dateTimeTools, fileTools, commonTools, terminalOperationTool);
+        return ToolCallbacks.from(dateTimeTools, fileTools, commonTools, terminalOperationTool, searchOnlineTools, terminateTools);
     }
 }

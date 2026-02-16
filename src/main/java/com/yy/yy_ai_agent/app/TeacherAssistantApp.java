@@ -10,6 +10,7 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 
 /**
  * @author 阿狸
@@ -51,14 +52,26 @@ public class TeacherAssistantApp {
                 .build();
     }
 
-    public String doChat(String prompt, String chatId) {
+    /**、
+     * 同步调用AI大模型
+     * @param prompt 提示词
+     * @param chatId 会话Id
+     * @return 响应结果
+     */
+    public String doChatBySync(String prompt, String chatId) {
         return chatClient.prompt().user(prompt)
                 .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, chatId))
                 .call()
                 .content();
     }
 
-    public String doChatWithRag(String prompt, String chatId) {
+    /**
+     * 同步调用AI大模型 (RAG)
+     * @param prompt 提示词
+     * @param chatId 会话Id
+     * @return 响应结果
+     */
+    public String doChatByRag(String prompt, String chatId) {
 
         return chatClient
                 .prompt()
@@ -67,6 +80,37 @@ public class TeacherAssistantApp {
                 .advisors(QuestionAnswerAdvisor.builder(loadTAVectorStore).build(),
                         new MyLogAdvisor())
                 .call()
+                .content();
+    }
+
+    /**
+     * 同步调用AI大模型 (RAG)
+     * @param prompt 提示词
+     * @param chatId 会话Id
+     * @return 响应结果
+     */
+    public Flux<String> doChatWithRagByStream(String prompt, String chatId) {
+
+        return chatClient
+                .prompt()
+                .user(prompt)
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, chatId))
+                .advisors(QuestionAnswerAdvisor.builder(loadTAVectorStore).build(),
+                        new MyLogAdvisor())
+                .stream()
+                .content();
+    }
+
+    /**
+     * 异步调用AI大模型 (流式调用)
+     * @param prompt 提示词
+     * @param chatId 会话Id
+     * @return 响应结果
+     */
+    public Flux<String> doChatByStream(String prompt, String chatId) {
+        return chatClient.prompt().user(prompt)
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, chatId))
+                .stream()
                 .content();
     }
 }

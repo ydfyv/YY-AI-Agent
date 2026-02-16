@@ -18,7 +18,7 @@ class TeacherAssistantAppTest {
     @Test
     void doChatWithRag() {
         UUID uuid = UUID.randomUUID();
-        String s = teacherAssistantApp.doChatWithRag("高三数学应该掌握什么知识, 用markdown格式写在项目根路径下的 【高三数学必学知识.md】", uuid.toString());
+        String s = teacherAssistantApp.doChatByRag("高三数学应该掌握什么知识, 用markdown格式写在项目根路径下的 【高三数学必学知识.md】", uuid.toString());
         Assertions.assertNotNull(s);
     }
 }

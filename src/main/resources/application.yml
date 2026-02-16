@@ -20,7 +20,7 @@ spring:
 server:
   servlet:
     context-path: /api
-  port: 8213
+  port: 8123
 
 # springdoc-openapi项目配置
 springdoc:
