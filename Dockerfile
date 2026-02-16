@@ -13,7 +13,7 @@ USER appuser
 
 # 将构建好的 Spring Boot JAR 文件复制到容器中
 # 假设你的 jar 文件名为 app.jar，放在 target/ 目录下
-COPY --chown=appuser:appgroup target/*.jar app.jar
+COPY --chown=appuser:appgroup /*.jar app.jar
 
 # 设置 JVM 参数以限制内存使用（总堆 + 非堆 <= 500MB）
 # -Xmx350m：最大堆内存
