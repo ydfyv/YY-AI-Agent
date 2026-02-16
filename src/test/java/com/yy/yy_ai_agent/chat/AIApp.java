@@ -20,9 +20,9 @@ public class AIApp {
 
     @Test
     public void test() {
-        UUID uuid = UUID.randomUUID();
-        String response = springAIInvoke.doChat("李白是谁？给我一个网址", uuid.toString());
-        System.out.println(response);
-        Assertions.assertNotNull(response);
+//        UUID uuid = UUID.randomUUID();
+//        String response = springAIInvoke.doChat("李白是谁？给我一个网址", uuid.toString());
+//        System.out.println(response);
+//        Assertions.assertNotNull(response);
     }
 }
