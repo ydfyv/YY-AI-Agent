@@ -1,6 +1,6 @@
 package com.yy.yy_ai_agent.agent;
 
-import com.yy.yy_ai_agent.Adviser.MyLogAdvisor;
+import com.yy.yy_ai_agent.adviser.MyLogAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.tool.ToolCallback;

@@ -1,6 +1,6 @@
 package com.yy.yy_ai_agent.app;
 
-import com.yy.yy_ai_agent.Adviser.MyLogAdvisor;
+import com.yy.yy_ai_agent.adviser.MyLogAdvisor;
 import com.yy.yy_ai_agent.chatMemory.FileBaseChatMemory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;

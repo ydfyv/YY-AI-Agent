@@ -1,4 +1,4 @@
-package com.yy.yy_ai_agent.Adviser;
+package com.yy.yy_ai_agent.adviser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClientRequest;

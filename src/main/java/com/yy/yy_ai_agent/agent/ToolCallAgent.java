@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import com.yy.yy_ai_agent.agent.model.AgentState;
+import com.yy.yy_ai_agent.agent.model.ThinkContext;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +58,7 @@ public class ToolCallAgent extends ReActAgent {
      * @return
      */
     @Override
-    public boolean think() {
+    public ThinkContext think() {
         // 1.校验提示词，拼接用户提示词
         if (StrUtil.isNotBlank(getNextStepPrompt())) {
             UserMessage userMessage = new UserMessage(getNextStepPrompt());
@@ -94,15 +95,15 @@ public class ToolCallAgent extends ReActAgent {
             if (toolCalls.isEmpty()) {
                 // 只有不调用工具时， 才需要手动记录助手消息
                 getMessageList().add(assistantMessage);
-                return false;
+                return new ThinkContext(false, text);
             } else {
                 // 需要调用工具时，无需记录助手消息，因为调用工具时，会自动记录
-                return true;
+                return new ThinkContext(true, text);
             }
         } catch (Exception e) {
             log.error(getName() + "的思考过程遇到了问题" + e.getMessage());
             new AssistantMessage("处理时遇到了问题：" + e.getMessage());
-            return false;
+            return new ThinkContext(false, "处理时遇到了问题：" + e.getMessage());
         }
     }
 

@@ -1,7 +1,7 @@
 package com.yy.yy_ai_agent.demo.invoke;
 
-import com.yy.yy_ai_agent.Adviser.MyLogAdvisor;
-import com.yy.yy_ai_agent.Adviser.ReReadingAdviser;
+import com.yy.yy_ai_agent.adviser.MyLogAdvisor;
+import com.yy.yy_ai_agent.adviser.ReReadingAdviser;
 import com.yy.yy_ai_agent.chatMemory.FileBaseChatMemory;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.ChatClient;
