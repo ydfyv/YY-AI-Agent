@@ -30,7 +30,7 @@ public class YYManus extends ToolCallAgent {
                 """;
         this.setNextStepPrompt(NEXT_STEP_PROMPT);
 
-        this.setMaxSteps(20);
+        this.setMaxSteps(10);
         // 初始化 AI 对话客户端
         ChatClient chatClient = ChatClient.builder(dashscopeChatModel)
                 .defaultAdvisors(new MyLogAdvisor())

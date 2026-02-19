@@ -27,7 +27,7 @@ function SuperAgent() {
 
     const userMessage = input.trim()
     setInput('')
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }])
+    setMessages(prev => [...prev, { role: 'user', content: userMessage }, { role: 'assistant', content: '' }])
     setIsLoading(true)
     setIsStreaming(true)
 
@@ -35,30 +35,57 @@ function SuperAgent() {
       const url = `${API.YYMANUS_SSE}?prompt=${encodeURIComponent(userMessage)}`
       eventSourceRef.current = new EventSource(url)
 
-      let aiMessage = { role: 'assistant', content: '' }
-      setMessages(prev => [...prev, aiMessage])
-
       eventSourceRef.current.onmessage = (event) => {
-        const chunk = event.data
+        try {
+          const chunk = event.data
+          if (chunk) {
+            setMessages(prev => {
+              const newMessages = [...prev]
+              const lastMessage = newMessages[newMessages.length - 1]
+              if (lastMessage && lastMessage.role === 'assistant') {
+                return [
+                  ...newMessages.slice(0, -1),
+                  { ...lastMessage, content: lastMessage.content + chunk }
+                ]
+              }
+              return newMessages
+            })
+          }
+        } catch (error) {
+          console.error('Error processing SSE message:', error)
+        }
+      }
+
+      eventSourceRef.current.onerror = (error) => {
+        console.error('SSE connection error:', {
+          type: error.type,
+          target: error.target,
+          readyState: error.target?.readyState
+        })
+        eventSourceRef.current?.close()
+        setIsLoading(false)
+        setIsStreaming(false)
         setMessages(prev => {
           const newMessages = [...prev]
           const lastMessage = newMessages[newMessages.length - 1]
-          if (lastMessage.role === 'assistant') {
-            lastMessage.content += chunk
+          if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.content) {
+            return [
+              ...newMessages.slice(0, -1),
+              { ...lastMessage, content: '连接失败，请检查后端服务是否正常运行' }
+            ]
           }
           return newMessages
         })
       }
 
-      eventSourceRef.current.onerror = (error) => {
-        console.error('SSE error:', error)
-        eventSourceRef.current.close()
+      eventSourceRef.current.addEventListener('close', () => {
+        eventSourceRef.current?.close()
         setIsLoading(false)
         setIsStreaming(false)
-      }
+      })
 
-      eventSourceRef.current.addEventListener('close', () => {
-        eventSourceRef.current.close()
+      eventSourceRef.current.addEventListener('end', () => {
+        eventSourceRef.current?.close()
         setIsLoading(false)
         setIsStreaming(false)
       })
@@ -67,6 +94,17 @@ function SuperAgent() {
       console.error('Error sending message:', error)
       setIsLoading(false)
       setIsStreaming(false)
+      setMessages(prev => {
+        const newMessages = [...prev]
+        const lastMessage = newMessages[newMessages.length - 1]
+        if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.content) {
+          return [
+            ...newMessages.slice(0, -1),
+            { ...lastMessage, content: `发送失败: ${error.message || '未知错误'}` }
+          ]
+        }
+        return newMessages
+      })
     }
   }
 
